@@ -9,7 +9,7 @@ from mordred import Calculator, descriptors
 ## Helper Functions
 def load_automl():
     st.write("Loading ML model from ./automl_results")
-    return AutoML(results_path=r"\automl_results")
+    return AutoML(results_path="automl_results")
 
 def automl_predict(X):
     st.write("Predicting RT values")
@@ -193,6 +193,7 @@ elif tool_type == "Optimise LC Method":
 
 
     
+
 
 
 
