@@ -18,7 +18,7 @@ def smiles_to_mol(smi):
     return Chem.AddHs(mol) if mol is not None else None
 
 def calculate_descriptors(smiles):
-    desc_names = pd.read_csv("./utiils/list_2d_mordred_descriptors.csv", sep=',')
+    desc_names = pd.read_csv("./utils/list_2d_mordred_descriptors.csv", sep=',')
     col_headers = ["id"] + desc_names["descriptors"].values.tolist()
     mols = []
     calc = Calculator(descriptors, ignore_3D=True)
@@ -186,5 +186,6 @@ elif tool_type == "Optimise LC Method":
 
 
     
+
 
 
