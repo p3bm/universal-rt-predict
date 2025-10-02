@@ -145,7 +145,7 @@ if tool_type == "Predict LC RT":
         method_params = pd.concat([method_params] * len(smiles), axis=0, ignore_index=True)
         features_df = pd.concat((molecular_descriptors,method_params), axis=1)
 
-        predict_df = pd.DataFram(automl_predict(features_df) * run_time)
+        predict_df = pd.DataFrame(automl_predict(features_df) * run_time)
         predict_df.columns = smiles
         st.table(predict_df)
 
@@ -186,6 +186,7 @@ elif tool_type == "Optimise LC Method":
 
 
     
+
 
 
 
