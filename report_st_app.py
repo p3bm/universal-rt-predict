@@ -8,12 +8,15 @@ from mordred import Calculator, descriptors
 
 ## Helper Functions
 def load_automl():
+    st.write("Loading ML model from ./automl_results")
     return AutoML(results_path="./automl_results")
 
 def automl_predict(X):
+    st.write("Predicting RT values")
     return automl.predict(X)
 
 def smiles_to_mol(smi):
+    st.write(f"Converting {smi} to RDKit mol object")
     mol = Chem.MolFromSmiles(smi)
     return Chem.AddHs(mol) if mol is not None else None
 
@@ -24,18 +27,22 @@ def calculate_descriptors(smiles):
     calc = Calculator(descriptors, ignore_3D=True)
     for smile in smiles:
         mols.append(smiles_to_mol(smile))
+    st.write("Calculating molecular descriptors")
     desc_df = calc.pandas(mols)
     desc_df.columns = col_headers
     return desc_df
 
 def calculate_resolution(rts, peak_width):
+    st.write("Calculating peak resolution values")
     rts = np.array(rts)
     return 1.18 * ((rts[:,None] - rts)/ (2 * peak_width))
 
 def load_method_params(method_name):
+    st.write(f"Loading method information for {method_name} from ./methods")
     return pd.read_csv(f"./methods/{method_name}.csv", sep=",")
 
 def preprocess(desc_df):
+    st.write("Applying preprocessing to feature DataFrame")
     return desc_df
 
 def check_features():
@@ -186,6 +193,7 @@ elif tool_type == "Optimise LC Method":
 
 
     
+
 
 
 
