@@ -7,9 +7,32 @@ from rdkit import Chem
 from mordred import Calculator, descriptors
 
 ## Helper Functions
+#def load_automl():
+#    st.write("Loading ML model from ./automl_results")
+#    return AutoML(results_path="automl_results")
+
+
 def load_automl():
-    st.write("Loading ML model from ./automl_results")
-    return AutoML(results_path="automl_results")
+    # Normalize path
+    results_path = Path("./automl_results").resolve()
+    st.write(f"Loading ML model from: {results_path}")
+
+    # Check if directory exists
+    if not results_path.exists():
+        st.error(f"AutoML results directory not found: {results_path}")
+        return None
+
+    # Optional: list contents for debugging
+    st.write("Contents of results directory:")
+    st.write(list(results_path.glob("*")))
+
+    try:
+        # Force eager loading by setting fit_level manually if needed
+        automl = AutoML(results_path=str(results_path))
+        return automl
+    except Exception as e:
+        st.error(f"Failed to load AutoML model: {e}")
+        return None
 
 def automl_predict(X):
     st.write("Predicting RT values")
@@ -193,6 +216,7 @@ elif tool_type == "Optimise LC Method":
 
 
     
+
 
 
 
