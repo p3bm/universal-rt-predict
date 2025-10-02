@@ -1,5 +1,4 @@
 mljar-supervised
 rdkit
 mordred
-distutils
 setup-tools
