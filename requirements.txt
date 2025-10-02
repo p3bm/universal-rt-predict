@@ -2,3 +2,4 @@ mljar-supervised
 rdkit
 mordred
 setuptools
+joblib == 1.4.2
