@@ -80,7 +80,7 @@ column_list = [
 st.title("LC RT Prediction")
 
 # Enter structures as SMILES
-input_text = st.test_area("Please enter SMILES strings with each one on a new line:", "", key="smiles_text_area")
+input_text = st.text_area("Please enter SMILES strings with each one on a new line:", "", key="smiles_text_area")
 
 tool_type = st.radio("Select the type of prediction to perform", ["Predict LC RT", "Predict Best LC Method", "Optimise LC Method"])
 
@@ -177,5 +177,6 @@ elif tool_type == "Optimise LC Method":
     column_ids = st.multiselect("Column IDs (mm)", [1,2.1,4.6])
     column_temps = st.multiselect("Column Temperatures (°C)", [30,35,40,45,50])
     flowrates = st.multiselect("Flow rates (mL/min)", np.arange(0.2,1.6,0.1))
+
 
     
