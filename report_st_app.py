@@ -137,10 +137,10 @@ if tool_type == "Predict LC RT":
         
         molecular_descriptors = calculate_descriptors(smiles)
 
-        run_time = method_params["run time"]
-
         if not other_method_flag:
             method_params = load_method_params(method_input)
+
+        run_time = method_params["run time"]
         
         method_params = pd.concat([method_params] * len(smiles), axis=0, ignore_index=True)
         features_df = pd.concat((molecular_descriptors,method_params), axis=1)
@@ -186,6 +186,7 @@ elif tool_type == "Optimise LC Method":
 
 
     
+
 
 
 
