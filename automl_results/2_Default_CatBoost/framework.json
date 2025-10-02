@@ -1,0 +1,91 @@
+{
+    "uid": "9c440acd-5bc1-4235-9330-69d9a27239eb",
+    "name": "2_Default_CatBoost",
+    "preprocessing": [
+        {
+            "ml_task": "regression",
+            "params": {
+                "columns_preprocessing": {},
+                "target_preprocessing": [
+                    "na_exclude"
+                ],
+                "ml_task": "regression"
+            }
+        }
+    ],
+    "learners": [
+        {
+            "library_version": "1.2.8",
+            "algorithm_name": "CatBoost",
+            "algorithm_short_name": "CatBoost",
+            "uid": "a7fff5d8-9866-46e3-a1b3-eace7101d94e",
+            "params": {
+                "model_type": "CatBoost",
+                "ml_task": "regression",
+                "n_jobs": -1,
+                "learning_rate": 0.1,
+                "depth": 6,
+                "rsm": 1,
+                "loss_function": "RMSE",
+                "seed": 2,
+                "eval_metric": "RMSE",
+                "explain_level": 2
+            },
+            "name": "learner_fold_0",
+            "best_ntree_limit": 4997
+        }
+    ],
+    "params": {
+        "additional": {
+            "max_rounds": 10000,
+            "early_stopping_rounds": 50,
+            "max_rows_limit": null,
+            "max_cols_limit": null
+        },
+        "preprocessing": {
+            "columns_preprocessing": {},
+            "target_preprocessing": [
+                "na_exclude"
+            ],
+            "ml_task": "regression"
+        },
+        "validation_strategy": {
+            "validation_type": "split",
+            "train_ratio": 0.75,
+            "shuffle": true,
+            "X_path": "C:/Users/ELNUser/Documents/PEBM Python/automl/20251001_105548/automl_results\\X.data",
+            "y_path": "C:/Users/ELNUser/Documents/PEBM Python/automl/20251001_105548/automl_results\\y.data",
+            "results_path": "C:/Users/ELNUser/Documents/PEBM Python/automl/20251001_105548/automl_results"
+        },
+        "learner": {
+            "model_type": "CatBoost",
+            "ml_task": "regression",
+            "n_jobs": -1,
+            "learning_rate": 0.1,
+            "depth": 6,
+            "rsm": 1,
+            "loss_function": "RMSE",
+            "seed": 2,
+            "eval_metric": "RMSE",
+            "explain_level": 2
+        },
+        "automl_random_state": 42,
+        "ml_task": "regression",
+        "explain_level": 2,
+        "name": "2_Default_CatBoost",
+        "status": "initialized",
+        "final_loss": null,
+        "train_time": null,
+        "data_type": "original",
+        "max_time_for_learner": 3600
+    },
+    "saved": [
+        "2_Default_CatBoost\\learner_fold_0.catboost"
+    ],
+    "predictions_fname": "2_Default_CatBoost\\predictions_validation.csv",
+    "metric_name": "rmse",
+    "final_loss": "0.054358754978757105",
+    "train_time": 345.43008756637573,
+    "is_stacked": false,
+    "joblib_version": "1.4.2"
+}
