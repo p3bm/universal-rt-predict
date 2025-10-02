@@ -33,7 +33,7 @@ def calculate_resolution(rts, peak_width):
     return 1.18 * ((rts[:,None] - rts)/ (2 * peak_width))
 
 def load_method_params(method_name):
-    return pd.read_csv(f"{method_name}.csv", sep=",")
+    return pd.read_csv(f"./methods/{method_name}.csv", sep=",")
 
 def preprocess(desc_df):
     return desc_df
@@ -89,6 +89,8 @@ if tool_type == "Predict LC RT":
     # Input method or choose from dropdown
     method_input = st.selectbox("Choose the LC method from the list below", method_list, key="method_input_selectbox")
 
+    other_method_flag = False
+    
     if method_input == "Other":
 
         st.error("Not yet implemented!")
@@ -123,8 +125,8 @@ if tool_type == "Predict LC RT":
 
         # add gradient input tool (editable table?)
 
-    else:
-        method_params = load_method_params(method_input)
+        method_params = None
+        other_method_flag = True
 
     # Predict RTs
     if st.button("Predict LC RT(s)"):
@@ -136,6 +138,10 @@ if tool_type == "Predict LC RT":
         molecular_descriptors = calculate_descriptors(smiles)
 
         run_time = method_params["run time"]
+
+        if not other_method_flag:
+            method_params = load_method_params(method_input)
+        
         method_params = pd.concat([method_params] * len(smiles), axis=0, ignore_index=True)
         features_df = pd.concat((molecular_descriptors,method_params), axis=1)
 
@@ -180,3 +186,4 @@ elif tool_type == "Optimise LC Method":
 
 
     
+
