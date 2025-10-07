@@ -5,15 +5,22 @@ import pandas as pd
 from pathlib import Path
 from rdkit import Chem
 from mordred import Calculator, descriptors
+import os
+import json
 
 ## Helper Functions
 def load_automl():
     st.write("Loading ML model")
-    return AutoML(results_path="./")
+    return AutoML(results_path=Path(""))
 
 def automl_predict(X):
     st.write("Predicting RT values")
-    return automl.predict(X)
+    try:
+        return automl.predict(X)
+    except AutoMLException:
+        print("Error predicting RT value(s), will try to fix load paths to address issue.")
+        fix_model_load_path()
+        return automl.predict(X)
 
 def smiles_to_mol(smi):
     st.write(f"Converting {smi} to RDKit mol object")
@@ -48,21 +55,55 @@ def preprocess(desc_df):
 def check_features():
     return None
 
+def fix_framework_json(path):
+    print("Attempting to fix framework.json save paths")
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+    except Exception as e:
+        print(f"Failed to read {path}: {e}")
+        return
+
+    changed = False
+
+    # Fix saved model paths
+    if "saved" in data:
+        fixed = [p.replace("\\", "/") for p in data["saved"]]
+        if fixed != data["saved"]:
+            data["saved"] = fixed
+            changed = True
+
+    # Fix preprocessing paths
+    if "preprocessing" in data:
+        for p in data["preprocessing"]:
+            for k, v in p.items():
+                if isinstance(v, str) and "\\" in v:
+                    p[k] = v.replace("\\", "/")
+                    changed = True
+
+    if changed:
+        try:
+            with open(path, "w") as f:
+                json.dump(data, f, indent=4)
+            print(f"Fixed: {path}")
+        except Exception as e:
+            print(f"Failed to write {path}: {e}")
+    else:
+        print(f"No changes needed: {path}")
+
+def fix_model_load_path():
+    for dirpath, _, filenames in os.walk("./"):
+        for filename in filenames:
+            if filename == "framework.json":
+                fix_framework_json(os.path.join(dirpath, filename))
+    return
+
 ## Generic lists
 method_list = [
     "BEH_acidic_4min",
     "BEH_acidic_6min",
     "BEH_neutral_4min",
-    "BEH_neutral_6min",
-    "Biphenyl_acidic_4min",
-    "Biphenyl_acidic_6min",
-    "Biphenyl_neutral_4min",
-    "Biphenyl_neutral_6min",
-    "HSS_acidic_4min",
-    "HSS_acidic_6min",
-    "HSS_neutral_4min",
-    "HSS_neutral_6min",
-    "Other"
+    "BEH_neutral_6min"
 ]
 
 eluent_list = [
@@ -147,13 +188,14 @@ if tool_type == "Predict LC RT":
         if not other_method_flag:
             method_params = load_method_params(method_input)
 
-        run_time = method_params["run time"]
+        run_time = method_params["run time"].values[0]
         
         method_params = pd.concat([method_params] * len(smiles), axis=0, ignore_index=True)
         features_df = pd.concat((molecular_descriptors,method_params), axis=1)
-
+        
         predict_df = pd.DataFrame(automl_predict(features_df) * run_time)
-        predict_df.columns = smiles
+        predict_df.columns = ["Retention Times (mins)"]
+        predict_df.index = smiles
         st.table(predict_df)
 
 elif tool_type == "Predict Best LC Method":
@@ -193,7 +235,6 @@ elif tool_type == "Optimise LC Method":
 
 
     
-
 
 
 
