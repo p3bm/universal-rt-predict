@@ -1,6 +1,6 @@
 import streamlit as st
 import numpy as np
-from supervised import AutoML, AutoMLException
+from supervised import AutoML
 import pandas as pd
 from pathlib import Path
 from rdkit import Chem
@@ -17,7 +17,8 @@ def automl_predict(X):
     st.write("Predicting RT values")
     try:
         return automl.predict(X)
-    except AutoMLException:
+    except Exception as e:
+        print(e)
         print("Error predicting RT value(s), will try to fix load paths to address issue.")
         fix_model_load_path()
         return automl.predict(X)
@@ -235,6 +236,7 @@ elif tool_type == "Optimise LC Method":
 
 
     
+
 
 
 
