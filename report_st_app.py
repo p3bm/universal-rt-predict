@@ -1,6 +1,6 @@
 import streamlit as st
 import numpy as np
-from supervised import AutoML
+from supervised import AutoML, AutoMLException
 import pandas as pd
 from pathlib import Path
 from rdkit import Chem
@@ -235,6 +235,7 @@ elif tool_type == "Optimise LC Method":
 
 
     
+
 
 
 
